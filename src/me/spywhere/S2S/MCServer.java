@@ -11,32 +11,80 @@ import java.net.UnknownHostException;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 
+// TODO: Auto-generated Javadoc
+/**
+ * MCServer Class.
+ */
 public class MCServer extends NewMCServer implements Runnable{
+	
+	/**
+	 * EmptyPacketListener class.
+	 *
+	 * @see PacketListener
+	 */
 	private class EmptyPacketListener implements PacketListener{
+		
+		/* (non-Javadoc)
+		 * @see me.spywhere.S2S.PacketListener#onPacketReceived(me.spywhere.S2S.Packet)
+		 */
 		@Override
 		public void onPacketReceived(Packet packet) {}
 		
+		/* (non-Javadoc)
+		 * @see me.spywhere.S2S.PacketListener#onPacketSent(me.spywhere.S2S.Packet, me.spywhere.S2S.Packet)
+		 */
 		@Override
 		public void onPacketSent(Packet packet,Packet respond) {}
 		
+		/* (non-Javadoc)
+		 * @see me.spywhere.S2S.PacketListener#onPacketFailed(me.spywhere.S2S.Packet, me.spywhere.S2S.PacketException)
+		 */
 		@Override
 		public void onPacketFailed(Packet packet, PacketException pe) {}
 	}
 	
+	/** Plugin. */
 	private Plugin plugin;
+	
+	/** Object. */
 	private Object object=null;
+	
+	/** Packet Listener. */
 	private PacketListener listener=new EmptyPacketListener();
+	
+	/** Timeout. */
 	private int timeout=5000;
+	
+	/** isSending. */
 	private boolean isSending=false;
 	
+	/**
+	 * Instantiates a new server.
+	 *
+	 * @param serverIP Server IP
+	 * @param serverPort Server port
+	 */
 	protected MCServer(String serverIP,int serverPort){
 		super(serverIP,serverPort);
 	}
 	
+	/**
+	 * Checks if data is sending.
+	 *
+	 * @return true, if data is sending
+	 */
 	public boolean isSending(){
 		return isSending;
 	}
 	
+	/**
+	 * Send data to this server.
+	 *
+	 * @param sender Server Connector
+	 * @param data Data to send
+	 * @param timeout Maximum time to send
+	 * @return true, if successful
+	 */
 	public boolean sendData(ServerConnector sender,Object data,int timeout){
 		if(!sender.hasPermission(PluginPermissions.SendData)){return false;}
 		if(isSending){return false;}
@@ -49,10 +97,20 @@ public class MCServer extends NewMCServer implements Runnable{
 		return true;
 	}
 	
-	public void sendData(ServerConnector sender,Object data){
-		sendData(sender,data,timeout);
+	/**
+	 * Send data to this server.
+	 *
+	 * @param sender Server Connector
+	 * @param data Data to send
+	 * @return true, if successful
+	 */
+	public boolean sendData(ServerConnector sender,Object data){
+		return sendData(sender,data,timeout);
 	}
 	
+	/* (non-Javadoc)
+	 * @see java.lang.Runnable#run()
+	 */
 	@Override
 	public void run() {
 		if(isSending){

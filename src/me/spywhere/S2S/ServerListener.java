@@ -12,24 +12,43 @@ import java.net.SocketTimeoutException;
 import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitTask;
 
+// TODO: Auto-generated Javadoc
+/**
+ * ServerListener Interface
+ */
 public class ServerListener implements Runnable {
-	//For server
-	boolean isRunning=false;
-	int taskID=-1;
-	S2S plugin;
+	/** isRunning. */
+	private boolean isRunning=false;
 	
-	public ServerListener(S2S instance) {
+	/** TaskID. */
+	private int taskID=-1;
+	
+	/** S2S plugin. */
+	private S2S plugin;
+	
+	/**
+	 * Instantiates a new server listener.
+	 *
+	 * @param instance S2S plugin
+	 */
+	protected ServerListener(S2S instance) {
 		plugin=instance;
 	}
 	
-	public void start() {
+	/**
+	 * Start listener.
+	 */
+	protected void start() {
 		if(isRunning){ return; }
 		isRunning=true;
 		BukkitTask task=Bukkit.getScheduler().runTaskAsynchronously(plugin, this);
 		taskID=task.getTaskId();
 	}
 	
-	public void stop() {
+	/**
+	 * Stop listener.
+	 */
+	protected void stop() {
 		if(!isRunning){ return; }
 		isRunning=false;
 		long checkTime = System.currentTimeMillis()+plugin.disconnectTimeout;
@@ -41,6 +60,9 @@ public class ServerListener implements Runnable {
 		Bukkit.getScheduler().cancelTask(taskID);
 	}
 	
+	/* (non-Javadoc)
+	 * @see java.lang.Runnable#run()
+	 */
 	@Override
 	public void run() {
 		plugin.log.info("["+plugin.getDescription().getName()+"] Starting server...");

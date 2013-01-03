@@ -20,22 +20,58 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
+/**
+ * S2S Class.
+ */
 public class S2S extends JavaPlugin{
+	
+	/** Console logger. */
 	protected Logger log=Logger.getLogger("Minecraft");
+	
+	/** Server listener. */
 	protected ServerListener serverListener = new ServerListener(this);
+	
+	/** Connection timeout. */
 	protected int connectionTimeout=50;
+	
+	/** Disconnect timeout. */
 	protected int disconnectTimeout=5000;
+	
+	/** Listening port. */
 	protected int listenPort=1234;
+	
+	/** Show incoming. */
 	protected boolean showIncoming=true;
+	
+	/** Default perm. */
 	protected String defaultPerm="nnyy";
+	
+	/** Server list. */
 	protected HashMap<String,MCServer> serverList = new HashMap<String,MCServer>();
+	
+	/** Permission list. */
 	protected HashMap<String,String> permissionList = new HashMap<String,String>();
+	
+	/** Connector list. */
 	protected HashMap<String,ServerConnector> connectorList = new HashMap<String,ServerConnector>();
 	
+	/**
+	 * Parses the plugin name.
+	 *
+	 * @param str Plugin name
+	 * @return Parsed plugin name
+	 */
 	protected String parsePluginName(String str){
 		return str.toLowerCase().replaceAll("-","--").replaceAll("_","__").replaceAll(":", "-").replaceAll("\\.", "_");
 	}
 	
+	/**
+	 * Checks for permission.
+	 *
+	 * @param plugin Plugin name
+	 * @param id Permission ID
+	 * @return true, if allowed
+	 */
 	protected boolean hasPermission(String plugin,int id){
 		if(permissionList.containsKey(parsePluginName(plugin))){
 			return permissionList.get(parsePluginName(plugin)).charAt(id)=='y';
@@ -43,6 +79,13 @@ public class S2S extends JavaPlugin{
 		return defaultPerm.charAt(id)=='y';
 	}
 	
+	/**
+	 * Request Server Connector.
+	 *
+	 * @param plugin Plugin
+	 * @param listener Packet Listener
+	 * @return Server Connector
+	 */
 	public ServerConnector requestSender(Plugin plugin,PacketListener listener){
 		if(!permissionList.containsKey(parsePluginName(plugin.getDescription().getName()))){
 			permissionList.put(parsePluginName(plugin.getDescription().getName()), this.defaultPerm);
@@ -52,6 +95,11 @@ public class S2S extends JavaPlugin{
 		return sc;
 	}
 	
+	/**
+	 * Save/Load configuration file
+	 *
+	 * @param save Save or not
+	 */
 	private void configSaveLoad(final boolean save) {
 		try{
 			final YMLIO yml=new YMLIO(new File(this.getDataFolder().toString(), "config.yml"));
@@ -114,6 +162,11 @@ public class S2S extends JavaPlugin{
 		}
 	}
 	
+	/**
+	 * Notify all ops on server.
+	 *
+	 * @param message Message
+	 */
 	protected void notifyOps(String message){
 		for(Player player:this.getServer().getOnlinePlayers()){
 			if(player.isOp()){
@@ -122,6 +175,9 @@ public class S2S extends JavaPlugin{
 		}
 	}
 	
+	/* (non-Javadoc)
+	 * @see org.bukkit.plugin.java.JavaPlugin#onEnable()
+	 */
 	@Override
 	public void onEnable() {
 		this.configSaveLoad(false);
@@ -129,6 +185,9 @@ public class S2S extends JavaPlugin{
 		this.log.info("["+this.getDescription().getName()+"] v"+this.getDescription().getVersion()+" successfully enabled.");
 	}
 	
+	/* (non-Javadoc)
+	 * @see org.bukkit.plugin.java.JavaPlugin#onDisable()
+	 */
 	@Override
 	public void onDisable() {
 		serverListener.stop();
@@ -136,6 +195,12 @@ public class S2S extends JavaPlugin{
 		this.log.info("["+this.getDescription().getName()+"] v"+this.getDescription().getVersion()+" successfully disabled.");
 	}
 	
+	/**
+	 * Parses the port.
+	 *
+	 * @param str Port (as string)
+	 * @return Port (as number)
+	 */
 	private int parsePort(String str){
 		try{
 			return Integer.parseInt(str);
@@ -143,6 +208,9 @@ public class S2S extends JavaPlugin{
 		return listenPort;
 	}
 	
+	/* (non-Javadoc)
+	 * @see org.bukkit.plugin.java.JavaPlugin#onCommand(org.bukkit.command.CommandSender, org.bukkit.command.Command, java.lang.String, java.lang.String[])
+	 */
 	@Override
 	public boolean onCommand(final CommandSender sender, final Command cmd, final String commandLabel, final String[] args) {
 		if(args.length>=1){
