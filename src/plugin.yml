@@ -1,0 +1,10 @@
+name: S2S
+main: me.spywhere.S2S.S2S
+version: 0.1
+description: >
+    Server-to-server management plugin
+commands:
+   server2server:
+       aliases: [servertoserver,sts,server2server,s2s]
+       description: S2S main command
+       usage: Command not available.
