@@ -3,9 +3,12 @@ package me.spywhere.S2S;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.BindException;
+import java.net.ConnectException;
+import java.net.NoRouteToHostException;
+import java.net.PortUnreachableException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.SocketException;
 import java.net.SocketTimeoutException;
 
 import org.bukkit.Bukkit;
@@ -109,11 +112,19 @@ public class ServerListener implements Runnable {
 						}
 					}else{
 						//Invalid packet
+						plugin.log.info("[" + plugin.getDescription().getName() + "] Invalid packet received.");
 					}
 					socket.close();
-				}catch (SocketException e){
-					e.printStackTrace();
 				}catch (SocketTimeoutException e){
+					//Timeout
+				}catch (BindException e){
+					plugin.log.info("[" + plugin.getDescription().getName() + "] Port " + plugin.listenPort + " is already in use.");
+				}catch (ConnectException e){
+					plugin.log.info("[" + plugin.getDescription().getName() + "] Connection refused.");
+				}catch (NoRouteToHostException e){
+					plugin.log.info("[" + plugin.getDescription().getName() + "] Host cannot be reached.");
+				}catch (PortUnreachableException e){
+					plugin.log.info("[" + plugin.getDescription().getName() + "] Port cannot be reached.");
 				}catch (IOException e){
 					e.printStackTrace();
 				}catch (ClassNotFoundException e){

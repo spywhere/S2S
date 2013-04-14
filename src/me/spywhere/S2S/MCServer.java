@@ -3,6 +3,10 @@ package me.spywhere.S2S;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.BindException;
+import java.net.ConnectException;
+import java.net.NoRouteToHostException;
+import java.net.PortUnreachableException;
 import java.net.Socket;
 import java.net.SocketException;
 import java.net.SocketTimeoutException;
@@ -154,15 +158,24 @@ public class MCServer extends NewMCServer implements Runnable {
 						output.close();
 					}catch (SocketTimeoutException e){
 						//Timeout
-					}catch (SocketException e){
-						//Socket Error:
-						listener.onPacketFailed(packet, new PacketException("Socket error!", e));
+					}catch (BindException e){
+						listener.onPacketFailed(packet, new PacketException("Port already in use!", e));
+						break;
+					}catch (ConnectException e){
+						listener.onPacketFailed(packet, new PacketException("Connection refused!", e));
+						break;
+					}catch (NoRouteToHostException e){
+						listener.onPacketFailed(packet, new PacketException("Host cannot be reached!", e));
+						break;
+					}catch (PortUnreachableException e){
+						listener.onPacketFailed(packet, new PacketException("Port cannot be reached!", e));
+						break;
 					}catch (IOException e){
-						//IO Error:
 						listener.onPacketFailed(packet, new PacketException("IO error!", e));
+						break;
 					}catch (ClassNotFoundException e){
-						//Invalid packet
 						listener.onPacketFailed(packet, new PacketException("Invalid packet!", e));
+						break;
 					}
 				}
 			}catch (UnknownHostException e){

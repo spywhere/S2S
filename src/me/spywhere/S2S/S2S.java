@@ -5,8 +5,11 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.BindException;
+import java.net.ConnectException;
+import java.net.NoRouteToHostException;
+import java.net.PortUnreachableException;
 import java.net.Socket;
-import java.net.SocketException;
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 import java.util.HashMap;
@@ -98,7 +101,7 @@ public class S2S extends JavaPlugin {
 		try{
 			final YMLIO yml = new YMLIO(new File(this.getDataFolder().toString(), "config.yml"));
 			yml.setForceSave(save);
-			yml.setHeader("Permissions\n[1][2][3][4]\n[1] = Add server\n[2] = Remove server\n[3] = Send data\n[4] = Read data\n\nExample: nnyy\nAllow send/read data but disallow add/remove server");
+			yml.setHeader("Plugin Permissions\n[1][2][3][4]\n[1] = Add server\n[2] = Remove server\n[3] = Send data\n[4] = Read data\n\nExample: nnyy\nAllow send/read data but disallow add/remove server");
 			this.listenPort = yml.get("S2S.ListenPort", this.listenPort);
 			this.connectionTimeout = yml.get("S2S.ConnectionTime", this.connectionTimeout);
 			this.disconnectTimeout = yml.get("S2S.DisconnectTime", this.disconnectTimeout);
@@ -221,7 +224,7 @@ public class S2S extends JavaPlugin {
 			if(cmd.argIs("add")){
 				if(cmd.getArg() != null){
 					String name = cmd.nextArg();
-					if(cmd.argMatch("(\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3})|(([a-zA-Z0-9]+)(\\.[a-zA-Z0-9]+)+)")){
+					if(cmd.argMatch("(\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3})|(([a-zA-Z0-9]+)(\\.[a-zA-Z0-9]+)+)") || cmd.getArg().equalsIgnoreCase("localhost")){
 						String ip = cmd.nextArg();
 						String port = "25565";
 						if(cmd.hasArgs(false)){
@@ -316,7 +319,7 @@ public class S2S extends JavaPlugin {
 			}
 			try{
 				long currentTime = System.currentTimeMillis();
-				sender.sendMessage("Ping to " + serverIP + "!");
+				sender.sendMessage("Ping to " + serverIP + ":" + port + "!");
 				Socket socket = new Socket(serverIP, port);
 				socket.setSoTimeout(connectionTimeout);
 				Packet response = null;
@@ -337,18 +340,38 @@ public class S2S extends JavaPlugin {
 						output.close();
 					}catch (SocketTimeoutException e){
 						//Timeout
-					}catch (SocketException e){
-						sender.sendMessage("Socket error: " + e.getMessage());
+						sender.sendMessage("Socket Timeout");
+					}catch (BindException e){
+						sender.sendMessage("Port already in use.");
+						break;
+					}catch (ConnectException e){
+						sender.sendMessage("Connection refused.");
+						break;
+					}catch (NoRouteToHostException e){
+						sender.sendMessage("Host cannot be reached.");
+						break;
+					}catch (PortUnreachableException e){
+						sender.sendMessage("Port cannot be reached.");
+						break;
 					}catch (IOException e){
 						sender.sendMessage("IO error: " + e.getMessage());
+						e.printStackTrace();
+						break;
 					}catch (ClassNotFoundException e){
 						sender.sendMessage("Invalid packet!");
+						break;
 					}
 				}
 			}catch (UnknownHostException e){
 				sender.sendMessage("Unknown host: " + serverIP);
-			}catch (SocketException e){
-				sender.sendMessage("Socket error: " + e.getMessage());
+			}catch (BindException e){
+				sender.sendMessage("Port already in use.");
+			}catch (ConnectException e){
+				sender.sendMessage("Connection refused.");
+			}catch (NoRouteToHostException e){
+				sender.sendMessage("Host cannot be reached.");
+			}catch (PortUnreachableException e){
+				sender.sendMessage("Port cannot be reached.");
 			}catch (IOException e){
 				sender.sendMessage("IO error: " + e.getMessage());
 			}
