@@ -4,36 +4,39 @@ package me.spywhere.S2S;
 /**
  * PacketException Class.
  */
-public class PacketException extends Exception{
-	
+public class PacketException extends Exception {
 	/** The Constant serialVersionUID. */
-	private static final long serialVersionUID=1L;
+	private static final long serialVersionUID = 1L;
 	
 	/**
 	 * Instantiates a new packet exception.
-	 *
-	 * @param msg Message
+	 * 
+	 * @param msg
+	 *            Message
 	 */
-	public PacketException(String msg){
+	public PacketException(String msg) {
 		super(msg);
 	}
 	
 	/**
 	 * Instantiates a new packet exception.
-	 *
-	 * @param thrown Throw
+	 * 
+	 * @param thrown
+	 *            Throw
 	 */
-	public PacketException(Throwable thrown){
+	public PacketException(Throwable thrown) {
 		super(thrown);
 	}
 	
 	/**
 	 * Instantiates a new packet exception.
-	 *
-	 * @param msg Message
-	 * @param thrown Thrown
+	 * 
+	 * @param msg
+	 *            Message
+	 * @param thrown
+	 *            Thrown
 	 */
-	public PacketException(String msg,Throwable thrown){
-		super(msg,thrown);
+	public PacketException(String msg, Throwable thrown) {
+		super(msg, thrown);
 	}
 }

@@ -5,7 +5,6 @@ package me.spywhere.S2S;
  * PluginPermissions Enumerator.
  */
 public enum PluginPermissions {
-	
 	/** Add server. */
 	AddServer(0),
 	/** Remove server. */
@@ -14,25 +13,25 @@ public enum PluginPermissions {
 	SendData(2),
 	/** Read data. */
 	ReadData(3);
-	
 	/** Permission ID. */
 	private int id;
 	
 	/**
 	 * Instantiates a new plugin permission.
-	 *
-	 * @param id Permission ID
+	 * 
+	 * @param id
+	 *            Permission ID
 	 */
-	private PluginPermissions(int id){
-		this.id=id;
+	private PluginPermissions(int id) {
+		this.id = id;
 	}
 	
 	/**
 	 * Get permission ID
-	 *
+	 * 
 	 * @return Permission ID
 	 */
-	public int getID(){
+	public int getID() {
 		return id;
 	}
 }

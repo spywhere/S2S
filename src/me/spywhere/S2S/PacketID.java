@@ -5,7 +5,6 @@ package me.spywhere.S2S;
  * PacketID Enumerator.
  */
 public enum PacketID {
-	
 	/** Invalid. */
 	Invalid(0),
 	/** Ping. */
@@ -16,25 +15,25 @@ public enum PacketID {
 	Internal(3),
 	/** Data. */
 	Data(4);
-	
 	/** Packet ID. */
 	private int id;
 	
 	/**
 	 * Instantiates a new packet ID.
-	 *
-	 * @param id Packet ID
+	 * 
+	 * @param id
+	 *            Packet ID
 	 */
-	private PacketID(int id){
-		this.id=id;
+	private PacketID(int id) {
+		this.id = id;
 	}
 	
 	/**
 	 * Get packet ID.
-	 *
+	 * 
 	 * @return Packet ID
 	 */
-	public int getID(){
+	public int getID() {
 		return id;
 	}
 }

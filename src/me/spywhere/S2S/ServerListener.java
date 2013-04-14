@@ -8,7 +8,6 @@ import java.net.Socket;
 import java.net.SocketException;
 import java.net.SocketTimeoutException;
 
-
 import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitTask;
 
@@ -18,21 +17,20 @@ import org.bukkit.scheduler.BukkitTask;
  */
 public class ServerListener implements Runnable {
 	/** isRunning. */
-	private boolean isRunning=false;
-	
+	private boolean isRunning = false;
 	/** TaskID. */
-	private int taskID=-1;
-	
+	private int taskID = -1;
 	/** S2S plugin. */
 	private S2S plugin;
 	
 	/**
 	 * Instantiates a new server listener.
-	 *
-	 * @param instance S2S plugin
+	 * 
+	 * @param instance
+	 *            S2S plugin
 	 */
 	protected ServerListener(S2S instance) {
-		plugin=instance;
+		plugin = instance;
 	}
 	
 	/**
@@ -40,9 +38,9 @@ public class ServerListener implements Runnable {
 	 */
 	protected void start() {
 		if(isRunning){ return; }
-		isRunning=true;
-		BukkitTask task=Bukkit.getScheduler().runTaskAsynchronously(plugin, this);
-		taskID=task.getTaskId();
+		isRunning = true;
+		BukkitTask task = Bukkit.getScheduler().runTaskAsynchronously(plugin, this);
+		taskID = task.getTaskId();
 	}
 	
 	/**
@@ -50,9 +48,9 @@ public class ServerListener implements Runnable {
 	 */
 	protected void stop() {
 		if(!isRunning){ return; }
-		isRunning=false;
-		long checkTime = System.currentTimeMillis()+plugin.disconnectTimeout;
-		while(checkTime>System.currentTimeMillis()){
+		isRunning = false;
+		long checkTime = System.currentTimeMillis() + plugin.disconnectTimeout;
+		while (checkTime > System.currentTimeMillis()){
 			if(!Bukkit.getScheduler().isCurrentlyRunning(taskID)){
 				break;
 			}
@@ -60,47 +58,46 @@ public class ServerListener implements Runnable {
 		Bukkit.getScheduler().cancelTask(taskID);
 	}
 	
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
 	 * @see java.lang.Runnable#run()
 	 */
 	@Override
 	public void run() {
-		plugin.log.info("["+plugin.getDescription().getName()+"] Starting server...");
-		ServerSocket serverSocket=null;
+		plugin.log.info("[" + plugin.getDescription().getName() + "] Starting server...");
+		ServerSocket serverSocket = null;
 		try{
-			serverSocket=new ServerSocket(plugin.listenPort);
+			serverSocket = new ServerSocket(plugin.listenPort);
 			serverSocket.setSoTimeout(plugin.connectionTimeout);
-			plugin.log.info("["+plugin.getDescription().getName()+"] Server started.");
+			plugin.log.info("[" + plugin.getDescription().getName() + "] Server started.");
 		}catch (IOException e){
 			e.printStackTrace();
 		}
-		if(serverSocket!=null){
+		if(serverSocket != null){
 			Socket socket = null;
 			while (isRunning){
 				try{
 					socket = serverSocket.accept();
 					if(plugin.showIncoming){
-						plugin.log.info("["+plugin.getDescription().getName()+"] Incoming packet from ["+socket.getLocalAddress().getHostAddress()+":"+socket.getLocalPort()+"]...");
+						plugin.log.info("[" + plugin.getDescription().getName() + "] Incoming packet from [" + socket.getLocalAddress().getHostAddress() + ":" + socket.getLocalPort() + "]...");
 					}
-					
-					ObjectInputStream input=new ObjectInputStream(socket.getInputStream());
+					ObjectInputStream input = new ObjectInputStream(socket.getInputStream());
 					Object object = input.readObject();
 					if(object instanceof Packet){
 						Packet respond = (Packet) object;
-						if(respond.getPacketID()==PacketID.Ping){
-							Packet packet = new Packet(PacketID.Pong,socket.getLocalAddress().getHostAddress(),plugin.getDescription().getName(),plugin.getDescription().getVersion(),"Welcome to the server!");
+						if(respond.getPacketID() == PacketID.Ping){
+							Packet packet = new Packet(PacketID.Pong, socket.getLocalAddress().getHostAddress(), plugin.getDescription().getName(), plugin.getDescription().getVersion(), "Welcome to the server!");
 							ObjectOutputStream output = new ObjectOutputStream(socket.getOutputStream());
 							output.flush();
 							output.writeObject(packet);
 							output.close();
 						}else{
 							//Write respond
-							Packet packet = new Packet(PacketID.Pong,socket.getLocalAddress().getHostAddress(),respond.getPluginName(),respond.getPluginVersion(),null);
+							Packet packet = new Packet(PacketID.Pong, socket.getLocalAddress().getHostAddress(), respond.getPluginName(), respond.getPluginVersion(), null);
 							ObjectOutputStream output = new ObjectOutputStream(socket.getOutputStream());
 							output.flush();
 							output.writeObject(packet);
 							output.close();
-							
 							if(plugin.connectorList.containsKey(respond.getPluginName().toLowerCase())){
 								PacketListener listener = plugin.connectorList.get(respond.getPluginName().toLowerCase()).getPacketListener();
 								if(plugin.hasPermission(plugin.parsePluginName(respond.getPluginName()), PluginPermissions.ReadData.getID())){
@@ -117,7 +114,6 @@ public class ServerListener implements Runnable {
 				}catch (SocketException e){
 					e.printStackTrace();
 				}catch (SocketTimeoutException e){
-					
 				}catch (IOException e){
 					e.printStackTrace();
 				}catch (ClassNotFoundException e){
@@ -126,12 +122,12 @@ public class ServerListener implements Runnable {
 				}
 			}
 			try{
-				plugin.log.info("["+plugin.getDescription().getName()+"] Disconnecting...");
+				plugin.log.info("[" + plugin.getDescription().getName() + "] Disconnecting...");
 				serverSocket.close();
 			}catch (IOException e){
 				e.printStackTrace();
 			}
 		}
-		plugin.log.info("["+plugin.getDescription().getName()+"] Disconnected.");
+		plugin.log.info("[" + plugin.getDescription().getName() + "] Disconnected.");
 	}
 }
