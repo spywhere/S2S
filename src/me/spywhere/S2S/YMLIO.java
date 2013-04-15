@@ -15,207 +15,221 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemStack;
 
-// TODO: Auto-generated Javadoc
+//To do:
+//Return all "possible" path from specified path
+//
+
+
 /**
- * YMLIO Class.
+ * Enhanced YML File Configuration.
+ * Easy to use, fully customizable.<br/>
+ * Use native {@link YamlConfiguration} and {@link FileConfiguration}.
+ * 
+ * @version 0.3
+ * 
+ * @author spywhere
+ * 
+ * @see FileConfiguration
+ * @see YamlConfiguration
  */
 public class YMLIO {
-	/** YML Configuration. */
-	private FileConfiguration yml = new YamlConfiguration();
-	/** File. */
-	private File file = null;
-	/** Force save. */
-	private boolean force = false;
+	
+	/** The yaml file configuration. */
+	private FileConfiguration yml=new YamlConfiguration();
+	
+	/** The yaml file. */
+	private File file=null;
+	
+	/** The force save mode. */
+	private boolean force=false;
 	
 	/**
-	 * Instantiates a new YMLIO.
-	 * 
-	 * @param file
-	 *            File
-	 * @throws FileNotFoundException
-	 *             FileNotFoundException
-	 * @throws IOException
-	 *             I/O Exception
-	 * @throws InvalidConfigurationException
-	 *             InvalidConfigurationException
+	 * Instantiates a new Enhanced YML File Configuration.
+	 *
+	 * @param file the yaml file to read
+	 * @throws FileNotFoundException the exception that will be thrown if file not found
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 * @throws InvalidConfigurationException the exception that will be thrown if the file is not a valid yaml configuration file
 	 */
 	public YMLIO(final File file) throws FileNotFoundException, IOException, InvalidConfigurationException {
-		this.file = file;
+		this.file=file;
 		if(file.exists()){
 			this.yml.load(this.file);
 		}
 	}
 	
 	/**
-	 * Contains path.
-	 * 
-	 * @param path
-	 *            Path
-	 * @return true, if exists
+	 * Contains specified path.
+	 *
+	 * @since 0.1
+	 *
+	 * @param path the path
+	 * @return true, if contains
 	 */
 	public boolean contains(final String path) {
 		return this.hasPath(path, "");
 	}
 	
 	/**
-	 * Get boolean.
-	 * 
-	 * @param path
-	 *            Path
-	 * @param def
-	 *            Default value
-	 * @return Value
+	 * Gets boolean from specified path.
+	 *
+	 * @since 0.1
+	 *
+	 * @param path the path
+	 * @param def the default value
+	 * @return the value
 	 */
 	public boolean get(final String path, final boolean def) {
-		boolean obj = this.yml.getBoolean(path, def);
+		boolean obj=this.yml.getBoolean(path, def);
 		if(this.force){
-			obj = def;
+			obj=def;
 		}
 		this.set(path, obj);
 		return obj;
 	}
 	
 	/**
-	 * Get double.
-	 * 
-	 * @param path
-	 *            Path
-	 * @param def
-	 *            Default value
-	 * @return Value
+	 * Gets double from specified path.
+	 *
+	 * @since 0.1
+	 *
+	 * @param path the path
+	 * @param def the default value
+	 * @return the value
 	 */
 	public double get(final String path, final double def) {
-		double obj = this.yml.getDouble(path, def);
+		double obj=this.yml.getDouble(path, def);
 		if(this.force){
-			obj = def;
+			obj=def;
 		}
 		this.set(path, obj);
 		return obj;
 	}
 	
 	/**
-	 * Get integer.
-	 * 
-	 * @param path
-	 *            Path
-	 * @param def
-	 *            Default value
-	 * @return Value
+	 * Gets integer from specified path.
+	 *
+	 * @since 0.1
+	 *
+	 * @param path the path
+	 * @param def the default value
+	 * @return the value
 	 */
 	public int get(final String path, final int def) {
-		int obj = this.yml.getInt(path, def);
+		int obj=this.yml.getInt(path, def);
 		if(this.force){
-			obj = def;
+			obj=def;
 		}
 		this.set(path, obj);
 		return obj;
 	}
 	
 	/**
-	 * Get item stack.
-	 * 
-	 * @param path
-	 *            Path
-	 * @param def
-	 *            Default value
-	 * @return Value
+	 * Gets {@link ItemStack} from specified path.
+	 *
+	 * @since 0.1
+	 *
+	 * @param path the path
+	 * @param def the default value
+	 * @return the value
 	 */
 	public ItemStack get(final String path, final ItemStack def) {
-		ItemStack obj = this.yml.getItemStack(path, def);
+		ItemStack obj=this.yml.getItemStack(path, def);
 		if(this.force){
-			obj = def;
+			obj=def;
 		}
 		this.set(path, obj);
 		return obj;
 	}
 	
 	/**
-	 * Get long.
-	 * 
-	 * @param path
-	 *            Path
-	 * @param def
-	 *            Default value
-	 * @return Value
+	 * Gets long from specified path.
+	 *
+	 * @since 0.1
+	 *
+	 * @param path the path
+	 * @param def the default value
+	 * @return the value
 	 */
 	public long get(final String path, final long def) {
-		long obj = this.yml.getLong(path, def);
+		long obj=this.yml.getLong(path, def);
 		if(this.force){
-			obj = def;
+			obj=def;
 		}
 		this.set(path, obj);
 		return obj;
 	}
 	
 	/**
-	 * Get object.
-	 * 
-	 * @param path
-	 *            Path
-	 * @param def
-	 *            Default value
-	 * @return Value
+	 * Gets object from specified path.
+	 *
+	 * @since 0.1
+	 *
+	 * @param path the path
+	 * @param def the default value
+	 * @return the value
 	 */
 	public Object get(final String path, final Object def) {
-		Object obj = this.yml.get(path, def);
+		Object obj=this.yml.get(path, def);
 		if(this.force){
-			obj = def;
+			obj=def;
 		}
 		this.set(path, obj);
 		return obj;
 	}
 	
 	/**
-	 * Get offline player.
-	 * 
-	 * @param path
-	 *            Path
-	 * @param def
-	 *            Default value
-	 * @return Value
+	 * Gets {@link OfflinePlayer} from specified path.
+	 *
+	 * @since 0.1
+	 *
+	 * @param path the path
+	 * @param def the default value
+	 * @return the value
 	 */
 	public OfflinePlayer get(final String path, final OfflinePlayer def) {
-		OfflinePlayer obj = this.yml.getOfflinePlayer(path, def);
+		OfflinePlayer obj=this.yml.getOfflinePlayer(path, def);
 		if(this.force){
-			obj = def;
+			obj=def;
 		}
 		this.set(path, obj);
 		return obj;
 	}
 	
 	/**
-	 * Get string.
-	 * 
-	 * @param path
-	 *            Path
-	 * @param def
-	 *            Default value
-	 * @return Value
+	 * Gets string from specified path.
+	 *
+	 * @since 0.1
+	 *
+	 * @param path the path
+	 * @param def the default value
+	 * @return the value
 	 */
 	public String get(final String path, final String def) {
-		String obj = this.yml.getString(path, def);
+		String obj=this.yml.getString(path, def);
 		if(this.force){
-			obj = def;
+			obj=def;
 		}
 		this.set(path, obj);
 		return obj;
 	}
 	
 	/**
-	 * Gets the as map.
-	 * 
-	 * @param path
-	 *            the path
-	 * @return the as map
+	 * Gets the paths and values as map.
+	 *
+	 * @since 0.2
+	 *
+	 * @param path the path
+	 * @return the map of path and value
 	 */
 	public Map<String, Object> getAsMap(final String path) {
-		final Map<String, Object> map = new HashMap<String, Object>();
-		if(this.yml.contains(path) && this.yml.isConfigurationSection(path)){
-			final Set<String> keys = this.yml.getConfigurationSection(path).getKeys(false);
-			if(keys.size() > 0){
-				final Object[] key = keys.toArray();
+		final Map<String, Object> map=new HashMap<String, Object>();
+		if(this.yml.contains(path)&&this.yml.isConfigurationSection(path)){
+			final Set<String> keys=this.yml.getConfigurationSection(path).getKeys(false);
+			if(keys.size()>0){
+				final Object[] key=keys.toArray();
 				for(final Object element:key){
-					map.put((String) element, this.getObject(path + "." + (String) element));
+					map.put(path+"."+(String) element, this.getObject(path+"."+(String) element));
 				}
 			}
 		}
@@ -223,18 +237,41 @@ public class YMLIO {
 	}
 	
 	/**
-	 * Gets the as path list.
-	 * 
-	 * @param path
-	 *            the path
-	 * @return the as path list
+	 * Gets the full paths list.
+	 *
+	 * @since 0.3
+	 *
+	 * @param path the path
+	 * @return the list of full paths
+	 */
+	public List<String> getAsFullPathList(final String path) {
+		final List<String> list=new ArrayList<String>();
+		if(this.yml.contains(path)&&this.yml.isConfigurationSection(path)){
+			final Set<String> keys=this.yml.getConfigurationSection(path).getKeys(false);
+			if(keys.size()>0){
+				final Object[] key=keys.toArray();
+				for(final Object element:key){
+					list.add(path+"."+(String) element);
+				}
+			}
+		}
+		return list;
+	}
+	
+	/**
+	 * Gets the path names list.
+	 *
+	 * @since 0.2
+	 *
+	 * @param path the path
+	 * @return the list of path names
 	 */
 	public List<String> getAsPathList(final String path) {
-		final List<String> list = new ArrayList<String>();
-		if(this.yml.contains(path) && this.yml.isConfigurationSection(path)){
-			final Set<String> keys = this.yml.getConfigurationSection(path).getKeys(false);
-			if(keys.size() > 0){
-				final Object[] key = keys.toArray();
+		final List<String> list=new ArrayList<String>();
+		if(this.yml.contains(path)&&this.yml.isConfigurationSection(path)){
+			final Set<String> keys=this.yml.getConfigurationSection(path).getKeys(false);
+			if(keys.size()>0){
+				final Object[] key=keys.toArray();
 				for(final Object element:key){
 					list.add((String) element);
 				}
@@ -244,20 +281,21 @@ public class YMLIO {
 	}
 	
 	/**
-	 * Gets the as value list.
-	 * 
-	 * @param path
-	 *            the path
-	 * @return the as value list
+	 * Gets the values list.
+	 *
+	 * @since 0.2
+	 *
+	 * @param path the path
+	 * @return the list of path values
 	 */
 	public List<Object> getAsValueList(final String path) {
-		final List<Object> list = new ArrayList<Object>();
-		if(this.yml.contains(path) && this.yml.isConfigurationSection(path)){
-			final Set<String> keys = this.yml.getConfigurationSection(path).getKeys(false);
-			if(keys.size() > 0){
-				final Object[] key = keys.toArray();
+		final List<Object> list=new ArrayList<Object>();
+		if(this.yml.contains(path)&&this.yml.isConfigurationSection(path)){
+			final Set<String> keys=this.yml.getConfigurationSection(path).getKeys(false);
+			if(keys.size()>0){
+				final Object[] key=keys.toArray();
 				for(final Object element:key){
-					list.add(this.getObject(path + "." + (String) element));
+					list.add(this.getObject(path+"."+(String) element));
 				}
 			}
 		}
@@ -266,10 +304,11 @@ public class YMLIO {
 	
 	/**
 	 * Gets the boolean.
-	 * 
-	 * @param path
-	 *            the path
-	 * @return the boolean
+	 *
+	 * @since 0.1
+	 *
+	 * @param path the path
+	 * @return the boolean value
 	 */
 	public boolean getBoolean(final String path) {
 		return this.yml.getBoolean(path);
@@ -277,9 +316,10 @@ public class YMLIO {
 	
 	/**
 	 * Gets the boolean list.
-	 * 
-	 * @param path
-	 *            the path
+	 *
+	 * @since 0.1
+	 *
+	 * @param path the path
 	 * @return the boolean list
 	 */
 	public List<Boolean> getBooleanList(final String path) {
@@ -288,20 +328,20 @@ public class YMLIO {
 	
 	/**
 	 * Gets the boolean list.
-	 * 
-	 * @param path
-	 *            the path
-	 * @param def
-	 *            the def
+	 *
+	 * @since 0.1
+	 *
+	 * @param path the path
+	 * @param def the default list
 	 * @return the boolean list
 	 */
 	public List<Boolean> getBooleanList(final String path, final List<Boolean> def) {
-		List<Boolean> obj = def;
+		List<Boolean> obj=def;
 		if(this.yml.contains(path)){
-			obj = this.getBooleanList(path);
+			obj=this.getBooleanList(path);
 		}
 		if(this.force){
-			obj = def;
+			obj=def;
 		}
 		this.set(path, obj);
 		return obj;
@@ -309,9 +349,10 @@ public class YMLIO {
 	
 	/**
 	 * Gets the byte list.
-	 * 
-	 * @param path
-	 *            the path
+	 *
+	 * @since 0.1
+	 *
+	 * @param path the path
 	 * @return the byte list
 	 */
 	public List<Byte> getByteList(final String path) {
@@ -320,20 +361,20 @@ public class YMLIO {
 	
 	/**
 	 * Gets the byte list.
-	 * 
-	 * @param path
-	 *            the path
-	 * @param def
-	 *            the def
+	 *
+	 * @since 0.1
+	 *
+	 * @param path the path
+	 * @param def the default list
 	 * @return the byte list
 	 */
 	public List<Byte> getByteList(final String path, final List<Byte> def) {
-		List<Byte> obj = def;
+		List<Byte> obj=def;
 		if(this.yml.contains(path)){
-			obj = this.getByteList(path);
+			obj=this.getByteList(path);
 		}
 		if(this.force){
-			obj = def;
+			obj=def;
 		}
 		this.set(path, obj);
 		return obj;
@@ -341,9 +382,10 @@ public class YMLIO {
 	
 	/**
 	 * Gets the character list.
-	 * 
-	 * @param path
-	 *            the path
+	 *
+	 * @since 0.1
+	 *
+	 * @param path the path
 	 * @return the character list
 	 */
 	public List<Character> getCharacterList(final String path) {
@@ -352,20 +394,20 @@ public class YMLIO {
 	
 	/**
 	 * Gets the character list.
-	 * 
-	 * @param path
-	 *            the path
-	 * @param def
-	 *            the def
+	 *
+	 * @since 0.1
+	 *
+	 * @param path the path
+	 * @param def the default list
 	 * @return the character list
 	 */
 	public List<Character> getCharacterList(final String path, final List<Character> def) {
-		List<Character> obj = def;
+		List<Character> obj=def;
 		if(this.yml.contains(path)){
-			obj = this.getCharacterList(path);
+			obj=this.getCharacterList(path);
 		}
 		if(this.force){
-			obj = def;
+			obj=def;
 		}
 		this.set(path, obj);
 		return obj;
@@ -373,10 +415,11 @@ public class YMLIO {
 	
 	/**
 	 * Gets the double.
-	 * 
-	 * @param path
-	 *            the path
-	 * @return the double
+	 *
+	 * @since 0.1
+	 *
+	 * @param path the path
+	 * @return the double value
 	 */
 	public double getDouble(final String path) {
 		return this.yml.getDouble(path);
@@ -384,9 +427,10 @@ public class YMLIO {
 	
 	/**
 	 * Gets the double list.
-	 * 
-	 * @param path
-	 *            the path
+	 *
+	 * @since 0.1
+	 *
+	 * @param path the path
 	 * @return the double list
 	 */
 	public List<Double> getDoubleList(final String path) {
@@ -395,38 +439,42 @@ public class YMLIO {
 	
 	/**
 	 * Gets the double list.
-	 * 
-	 * @param path
-	 *            the path
-	 * @param def
-	 *            the def
+	 *
+	 * @since 0.1
+	 *
+	 * @param path the path
+	 * @param def the default list
 	 * @return the double list
 	 */
 	public List<Double> getDoubleList(final String path, final List<Double> def) {
-		List<Double> obj = def;
+		List<Double> obj=def;
 		if(this.yml.contains(path)){
-			obj = this.getDoubleList(path);
+			obj=this.getDoubleList(path);
 		}
 		if(this.force){
-			obj = def;
+			obj=def;
 		}
 		this.set(path, obj);
 		return obj;
 	}
 	
 	/**
-	 * Gets the file.
-	 * 
-	 * @return the file
+	 * Gets the read yaml file.
+	 *
+	 * @since 0.1
+	 *
+	 * @return the read yaml file
 	 */
 	public File getFile() {
 		return this.file;
 	}
 	
 	/**
-	 * Gets the file configuration.
-	 * 
-	 * @return the file configuration
+	 * Gets the configuration file.
+	 *
+	 * @since 0.1
+	 *
+	 * @return the configuration file
 	 */
 	public FileConfiguration getFileConfiguration() {
 		return this.yml;
@@ -434,9 +482,10 @@ public class YMLIO {
 	
 	/**
 	 * Gets the float list.
-	 * 
-	 * @param path
-	 *            the path
+	 *
+	 * @since 0.1
+	 *
+	 * @param path the path
 	 * @return the float list
 	 */
 	public List<Float> getFloatList(final String path) {
@@ -445,59 +494,63 @@ public class YMLIO {
 	
 	/**
 	 * Gets the float list.
-	 * 
-	 * @param path
-	 *            the path
-	 * @param def
-	 *            the def
+	 *
+	 * @since 0.1
+	 *
+	 * @param path the path
+	 * @param def the default list
 	 * @return the float list
 	 */
 	public List<Float> getFloatList(final String path, final List<Float> def) {
-		List<Float> obj = def;
+		List<Float> obj=def;
 		if(this.yml.contains(path)){
-			obj = this.getFloatList(path);
+			obj=this.getFloatList(path);
 		}
 		if(this.force){
-			obj = def;
+			obj=def;
 		}
 		this.set(path, obj);
 		return obj;
 	}
 	
 	/**
-	 * Gets the header.
-	 * 
-	 * @return the header
+	 * Gets the file header.
+	 *
+	 * @since 0.1
+	 *
+	 * @return the file header
 	 */
 	public String getHeader() {
 		return this.yml.options().header();
 	}
 	
 	/**
-	 * Gets the header.
-	 * 
-	 * @param def
-	 *            the def
-	 * @return the header
+	 * Gets the file header.
+	 *
+	 * @since 0.1
+	 *
+	 * @param def the default header
+	 * @return the file header
 	 */
 	public String getHeader(final String def) {
-		String str = this.getHeader();
+		String str=this.getHeader();
 		if(str.isEmpty()){
-			str = def;
+			str=def;
 		}
 		if(this.force){
-			str = def;
+			str=def;
 		}
 		this.setHeader(str);
 		return str;
 	}
 	
 	/**
-	 * Gets the int.
-	 * 
-	 * @param path
-	 *            the path
-	 * @return the int
+	 * Gets the integer.
+	 *
+	 * @since 0.1
+	 *
+	 * @param path the path
+	 * @return the integer value
 	 */
 	public int getInt(final String path) {
 		return this.yml.getInt(path);
@@ -505,9 +558,10 @@ public class YMLIO {
 	
 	/**
 	 * Gets the integer list.
-	 * 
-	 * @param path
-	 *            the path
+	 *
+	 * @since 0.1
+	 *
+	 * @param path the path
 	 * @return the integer list
 	 */
 	public List<Integer> getIntegerList(final String path) {
@@ -516,31 +570,32 @@ public class YMLIO {
 	
 	/**
 	 * Gets the integer list.
-	 * 
-	 * @param path
-	 *            the path
-	 * @param def
-	 *            the def
+	 *
+	 * @since 0.1
+	 *
+	 * @param path the path
+	 * @param def the default value
 	 * @return the integer list
 	 */
 	public List<Integer> getIntegerList(final String path, final List<Integer> def) {
-		List<Integer> obj = def;
+		List<Integer> obj=def;
 		if(this.yml.contains(path)){
-			obj = this.getIntegerList(path);
+			obj=this.getIntegerList(path);
 		}
 		if(this.force){
-			obj = def;
+			obj=def;
 		}
 		this.set(path, obj);
 		return obj;
 	}
 	
 	/**
-	 * Gets the item stack.
-	 * 
-	 * @param path
-	 *            the path
-	 * @return the item stack
+	 * Gets the {@link ItemStack}.
+	 *
+	 * @since 0.1
+	 *
+	 * @param path the path
+	 * @return the {@link ItemStack} value
 	 */
 	public ItemStack getItemStack(final String path) {
 		return this.yml.getItemStack(path);
@@ -548,9 +603,10 @@ public class YMLIO {
 	
 	/**
 	 * Gets the list.
-	 * 
-	 * @param path
-	 *            the path
+	 *
+	 * @since 0.1
+	 *
+	 * @param path the path
 	 * @return the list
 	 */
 	public List<?> getList(final String path) {
@@ -559,20 +615,20 @@ public class YMLIO {
 	
 	/**
 	 * Gets the list.
-	 * 
-	 * @param path
-	 *            the path
-	 * @param def
-	 *            the def
+	 *
+	 * @since 0.1
+	 *
+	 * @param path the path
+	 * @param def the default value
 	 * @return the list
 	 */
 	public List<?> getList(final String path, final List<?> def) {
-		List<?> obj = def;
+		List<?> obj=def;
 		if(this.yml.contains(path)){
-			obj = this.getList(path, def);
+			obj=this.getList(path, def);
 		}
 		if(this.force){
-			obj = def;
+			obj=def;
 		}
 		this.set(path, obj);
 		return obj;
@@ -580,10 +636,11 @@ public class YMLIO {
 	
 	/**
 	 * Gets the long.
-	 * 
-	 * @param path
-	 *            the path
-	 * @return the long
+	 *
+	 * @since 0.1
+	 *
+	 * @param path the path
+	 * @return the long value
 	 */
 	public long getLong(final String path) {
 		return this.yml.getLong(path);
@@ -591,9 +648,10 @@ public class YMLIO {
 	
 	/**
 	 * Gets the long list.
-	 * 
-	 * @param path
-	 *            the path
+	 *
+	 * @since 0.1
+	 *
+	 * @param path the path
 	 * @return the long list
 	 */
 	public List<Long> getLongList(final String path) {
@@ -602,20 +660,20 @@ public class YMLIO {
 	
 	/**
 	 * Gets the long list.
-	 * 
-	 * @param path
-	 *            the path
-	 * @param def
-	 *            the def
+	 *
+	 * @since 0.1
+	 *
+	 * @param path the path
+	 * @param def the default value
 	 * @return the long list
 	 */
 	public List<Long> getLongList(final String path, final List<Long> def) {
-		List<Long> obj = def;
+		List<Long> obj=def;
 		if(this.yml.contains(path)){
-			obj = this.getLongList(path);
+			obj=this.getLongList(path);
 		}
 		if(this.force){
-			obj = def;
+			obj=def;
 		}
 		this.set(path, obj);
 		return obj;
@@ -623,9 +681,10 @@ public class YMLIO {
 	
 	/**
 	 * Gets the map list.
-	 * 
-	 * @param path
-	 *            the path
+	 *
+	 * @since 0.1
+	 *
+	 * @param path the path
 	 * @return the map list
 	 */
 	public List<Map<?, ?>> getMapList(final String path) {
@@ -634,20 +693,20 @@ public class YMLIO {
 	
 	/**
 	 * Gets the map list.
-	 * 
-	 * @param path
-	 *            the path
-	 * @param def
-	 *            the def
+	 *
+	 * @since 0.1
+	 *
+	 * @param path the path
+	 * @param def the default value
 	 * @return the map list
 	 */
 	public List<Map<?, ?>> getMapList(final String path, final List<Map<?, ?>> def) {
-		List<Map<?, ?>> obj = def;
+		List<Map<?, ?>> obj=def;
 		if(this.yml.contains(path)){
-			obj = this.getMapList(path);
+			obj=this.getMapList(path);
 		}
 		if(this.force){
-			obj = def;
+			obj=def;
 		}
 		this.set(path, obj);
 		return obj;
@@ -655,9 +714,10 @@ public class YMLIO {
 	
 	/**
 	 * Gets the object.
-	 * 
-	 * @param path
-	 *            the path
+	 *
+	 * @since 0.1
+	 *
+	 * @param path the path
 	 * @return the object
 	 */
 	public Object getObject(final String path) {
@@ -665,22 +725,24 @@ public class YMLIO {
 	}
 	
 	/**
-	 * Gets the offline player.
-	 * 
-	 * @param path
-	 *            the path
-	 * @return the offline player
+	 * Gets the {@link OfflinePlayer}.
+	 *
+	 * @since 0.1
+	 *
+	 * @param path the path
+	 * @return the {@link OfflinePlayer} value
 	 */
 	public OfflinePlayer getOfflinePlayer(final String path) {
 		return this.yml.getOfflinePlayer(path);
 	}
 	
 	/**
-	 * Gets the path.
-	 * 
-	 * @param path
-	 *            the path
-	 * @return the path
+	 * Gets the path (without case-sensitive).
+	 *
+	 * @since 0.1
+	 *
+	 * @param path the path (without case-sensitive)
+	 * @return the path (with case-sensitive)
 	 */
 	public String getPath(final String path) {
 		return this.getPath(path, path, "");
@@ -689,29 +751,26 @@ public class YMLIO {
 	/**
 	 * Gets the path.
 	 * 
-	 * @param sPath
-	 *            the s path
-	 * @param sPath2
-	 *            the s path2
-	 * @param path
-	 *            the path
+	 * @param sPath the source path
+	 * @param sPath2 the source path 2
+	 * @param path the path
 	 * @return the path
 	 */
 	private String getPath(final String sPath, String sPath2, final String path) {
-		String pathPrefix = "";
+		String pathPrefix="";
 		if(!path.isEmpty()){
-			pathPrefix = path + ".";
+			pathPrefix=path+".";
 		}
 		if(this.yml.isConfigurationSection(path)){
-			final Set<String> key = this.yml.getConfigurationSection(path).getKeys(false);
-			if(key.size() > 0){
-				final Object[] paths = key.toArray();
+			final Set<String> key=this.yml.getConfigurationSection(path).getKeys(false);
+			if(key.size()>0){
+				final Object[] paths=key.toArray();
 				for(final Object path2:paths){
-					final String tmp = this.getPath(sPath, sPath2, pathPrefix + path2.toString());
+					final String tmp=this.getPath(sPath, sPath2, pathPrefix+path2.toString());
 					if(tmp.equalsIgnoreCase(sPath)){
 						return tmp;
 					}else{
-						sPath2 = tmp;
+						sPath2=tmp;
 					}
 				}
 			}
@@ -727,9 +786,10 @@ public class YMLIO {
 	
 	/**
 	 * Gets the short list.
-	 * 
-	 * @param path
-	 *            the path
+	 *
+	 * @since 0.1
+	 *
+	 * @param path the path
 	 * @return the short list
 	 */
 	public List<Short> getShortList(final String path) {
@@ -738,20 +798,20 @@ public class YMLIO {
 	
 	/**
 	 * Gets the short list.
-	 * 
-	 * @param path
-	 *            the path
-	 * @param def
-	 *            the def
+	 *
+	 * @since 0.1
+	 *
+	 * @param path the path
+	 * @param def the default list
 	 * @return the short list
 	 */
 	public List<Short> getShortList(final String path, final List<Short> def) {
-		List<Short> obj = def;
+		List<Short> obj=def;
 		if(this.yml.contains(path)){
-			obj = this.getShortList(path);
+			obj=this.getShortList(path);
 		}
 		if(this.force){
-			obj = def;
+			obj=def;
 		}
 		this.set(path, obj);
 		return obj;
@@ -759,9 +819,10 @@ public class YMLIO {
 	
 	/**
 	 * Gets the string.
-	 * 
-	 * @param path
-	 *            the path
+	 *
+	 * @since 0.1
+	 *
+	 * @param path the path
 	 * @return the string
 	 */
 	public String getString(final String path) {
@@ -770,9 +831,10 @@ public class YMLIO {
 	
 	/**
 	 * Gets the string list.
-	 * 
-	 * @param path
-	 *            the path
+	 *
+	 * @since 0.1
+	 *
+	 * @param path the path
 	 * @return the string list
 	 */
 	public List<String> getStringList(final String path) {
@@ -781,20 +843,20 @@ public class YMLIO {
 	
 	/**
 	 * Gets the string list.
-	 * 
-	 * @param path
-	 *            the path
-	 * @param def
-	 *            the def
+	 *
+	 * @since 0.1
+	 *
+	 * @param path the path
+	 * @param def the default list
 	 * @return the string list
 	 */
 	public List<String> getStringList(final String path, final List<String> def) {
-		List<String> obj = def;
+		List<String> obj=def;
 		if(this.yml.contains(path)){
-			obj = this.getStringList(path);
+			obj=this.getStringList(path);
 		}
 		if(this.force){
-			obj = def;
+			obj=def;
 		}
 		this.set(path, obj);
 		return obj;
@@ -802,24 +864,22 @@ public class YMLIO {
 	
 	/**
 	 * Checks for path.
-	 * 
-	 * @param sPath
-	 *            the s path
-	 * @param path
-	 *            the path
-	 * @return true, if successful
+	 *
+	 * @param sPath the source path
+	 * @param path the path
+	 * @return true, if contains
 	 */
 	private boolean hasPath(final String sPath, final String path) {
-		String pathPrefix = "";
+		String pathPrefix="";
 		if(!path.isEmpty()){
-			pathPrefix = path + ".";
+			pathPrefix=path+".";
 		}
 		if(this.yml.isConfigurationSection(path)){
-			final Set<String> key = this.yml.getConfigurationSection(path).getKeys(false);
-			if(key.size() > 0){
-				final Object[] paths = key.toArray();
+			final Set<String> key=this.yml.getConfigurationSection(path).getKeys(false);
+			if(key.size()>0){
+				final Object[] paths=key.toArray();
 				for(final Object path2:paths){
-					if(this.hasPath(sPath, pathPrefix + path2.toString())){ return true; }
+					if(this.hasPath(sPath, pathPrefix+path2.toString())){ return true; }
 				}
 			}
 		}else{
@@ -829,7 +889,9 @@ public class YMLIO {
 	}
 	
 	/**
-	 * Save.
+	 * Save the configurations.
+	 * 
+	 * @since 0.1
 	 */
 	public void save() {
 		try{
@@ -840,45 +902,47 @@ public class YMLIO {
 	}
 	
 	/**
-	 * Sets the.
-	 * 
-	 * @param path
-	 *            the path
-	 * @param obj
-	 *            the obj
+	 * Sets the object to specified path.
+	 *
+	 * @since 0.1
+	 *
+	 * @param path the path
+	 * @param obj the object
 	 */
 	public void set(final String path, final Object obj) {
 		this.yml.set(path, obj);
 	}
 	
 	/**
-	 * Sets the file configuration.
-	 * 
-	 * @param file
-	 *            the file
-	 * @param fileConfig
-	 *            the file config
+	 * Sets the configuration file.
+	 *
+	 * @since 0.1
+	 *
+	 * @param file the file to read
+	 * @param fileConfig the configuration file
 	 */
 	public void setFileConfiguration(final File file, final FileConfiguration fileConfig) {
-		this.file = file;
-		this.yml = fileConfig;
+		this.file=file;
+		this.yml=fileConfig;
 	}
 	
 	/**
-	 * Sets the force save.
-	 * 
-	 * @param force
-	 *            the new force save
+	 * Sets the force save mode.
+	 *
+	 * @since 0.1
+	 *
+	 * @param force the new force save mode
 	 */
 	public void setForceSave(final boolean force) {
-		this.force = force;
+		this.force=force;
 	}
 	
 	/**
-	 * Sets the header.
-	 * 
-	 * @param str
-	 *            the new header
+	 * Sets the file header.
+	 *
+	 * @since 0.1
+	 *
+	 * @param str the new file header
 	 */
 	public void setHeader(final String str) {
 		this.yml.options().header(str);

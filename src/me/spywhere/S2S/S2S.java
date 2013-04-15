@@ -14,7 +14,6 @@ import java.net.SocketException;
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.logging.Logger;
 
 import org.bukkit.command.Command;
@@ -119,8 +118,7 @@ public class S2S extends JavaPlugin {
 			}
 			this.defaultPerm = dperm;
 			if(!save){
-				List<String> servers = yml.getAsPathList("S2S.Servers");
-				for(String path:servers){
+				for(String path:yml.getAsPathList("S2S.Servers")){
 					if(yml.contains("S2S.Servers." + path + ".IP") && yml.contains("S2S.Servers." + path + ".Port")){
 						String ip = yml.get("S2S.Servers." + path + ".IP", "localhost");
 						int port = yml.get("S2S.Servers." + path + ".Port", this.listenPort);
@@ -128,8 +126,7 @@ public class S2S extends JavaPlugin {
 						serverList.put(path.toLowerCase(), server);
 					}
 				}
-				List<String> plugins = yml.getAsPathList("S2S.Plugins");
-				for(String path:plugins){
+				for(String path:yml.getAsPathList("S2S.Plugins")){
 					String perm = yml.get("S2S.Plugins." + path, this.defaultPerm);
 					permissionList.put(path.toLowerCase(), perm);
 				}
