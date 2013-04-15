@@ -132,7 +132,7 @@ public class MCServer extends NewMCServer implements Runnable {
 	public void run() {
 		if(isSending){
 			long currentTime = System.currentTimeMillis() + timeout;
-			Packet packet = new Packet(PacketID.Data, this.getServerIP(), plugin.getDescription().getName(), plugin.getDescription().getVersion(), object);
+			Packet packet = new Packet(PacketID.Data, this.getServerIP(), this.getServerPort(), plugin.getDescription().getName(), plugin.getDescription().getVersion(), object);
 			try{
 				Socket socket = new Socket(this.getServerIP(), this.getServerPort());
 				socket.setSoTimeout(50);
@@ -170,6 +170,9 @@ public class MCServer extends NewMCServer implements Runnable {
 					}catch (PortUnreachableException e){
 						listener.onPacketFailed(packet, new PacketException("Port cannot be reached!", e));
 						break;
+					}catch (SocketException e){
+						listener.onPacketFailed(packet, new PacketException("Socket error!", e));
+						break;
 					}catch (IOException e){
 						listener.onPacketFailed(packet, new PacketException("IO error!", e));
 						break;
@@ -180,10 +183,18 @@ public class MCServer extends NewMCServer implements Runnable {
 				}
 			}catch (UnknownHostException e){
 				listener.onPacketFailed(packet, new PacketException("Unknown host!", e));
+			}catch (BindException e){
+				listener.onPacketFailed(packet, new PacketException("Port already in use!", e));
+			}catch (ConnectException e){
+				listener.onPacketFailed(packet, new PacketException("Connection refused!", e));
+			}catch (NoRouteToHostException e){
+				listener.onPacketFailed(packet, new PacketException("Host cannot be reached!", e));
+			}catch (PortUnreachableException e){
+				listener.onPacketFailed(packet, new PacketException("Port cannot be reached!", e));
 			}catch (SocketException e){
-				e.printStackTrace();
+				listener.onPacketFailed(packet, new PacketException("Socket error!", e));
 			}catch (IOException e){
-				e.printStackTrace();
+				listener.onPacketFailed(packet, new PacketException("IO error!", e));
 			}
 			isSending = false;
 		}

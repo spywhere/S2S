@@ -13,6 +13,8 @@ public class Packet implements Serializable {
 	private PacketID packetId = PacketID.Invalid;
 	/** Server IP. */
 	private String serverIP = "Unknown";
+	/** Server Port. */
+	private int serverPort = 0;
 	/** Name of plugin send this packet. */
 	private String pluginSent = "Unknown";
 	/** Version of plugin send this packet. */
@@ -27,6 +29,8 @@ public class Packet implements Serializable {
 	 *            Packet ID
 	 * @param serverIP
 	 *            Server IP
+	 * @param serverPort
+	 *            Server Port
 	 * @param pluginSent
 	 *            Name of plugin send this packet
 	 * @param pluginVersion
@@ -34,9 +38,10 @@ public class Packet implements Serializable {
 	 * @param data
 	 *            Data
 	 */
-	protected Packet(PacketID packetId, String serverIP, String pluginSent, String pluginVersion, Object data) {
+	protected Packet(PacketID packetId, String serverIP, int serverPort, String pluginSent, String pluginVersion, Object data) {
 		this.packetId = packetId;
 		this.serverIP = serverIP;
+		this.serverPort = serverPort;
 		this.pluginSent = pluginSent;
 		this.pluginVersion = pluginVersion;
 		this.data = data;
@@ -58,6 +63,15 @@ public class Packet implements Serializable {
 	 */
 	public String getServerIP() {
 		return serverIP;
+	}
+	
+	/**
+	 * Get server port.
+	 * 
+	 * @return Server Port
+	 */
+	public int getServerPort() {
+		return serverPort;
 	}
 	
 	/**

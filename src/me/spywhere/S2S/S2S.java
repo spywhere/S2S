@@ -10,6 +10,7 @@ import java.net.ConnectException;
 import java.net.NoRouteToHostException;
 import java.net.PortUnreachableException;
 import java.net.Socket;
+import java.net.SocketException;
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 import java.util.HashMap;
@@ -323,7 +324,7 @@ public class S2S extends JavaPlugin {
 				Socket socket = new Socket(serverIP, port);
 				socket.setSoTimeout(connectionTimeout);
 				Packet response = null;
-				Packet packet = new Packet(PacketID.Ping, socket.getLocalAddress().getHostAddress(), this.getDescription().getName(), this.getDescription().getVersion(), null);
+				Packet packet = new Packet(PacketID.Ping, socket.getLocalAddress().getHostAddress(), socket.getLocalPort(), this.getDescription().getName(), this.getDescription().getVersion(), null);
 				while (response == null){
 					try{
 						ObjectOutputStream output = new ObjectOutputStream(socket.getOutputStream());
@@ -333,7 +334,7 @@ public class S2S extends JavaPlugin {
 						if(object instanceof Packet){
 							Packet respond = (Packet) object;
 							if(respond.getPacketID() == PacketID.Pong){
-								sender.sendMessage("Pong from " + respond.getServerIP() + "! [" + (System.currentTimeMillis() - currentTime) + "ms]");
+								sender.sendMessage("Pong from " + respond.getServerIP() + ":" + respond.getServerPort() + "! [" + (System.currentTimeMillis() - currentTime) + "ms]");
 								response = respond;
 							}
 						}
@@ -352,6 +353,10 @@ public class S2S extends JavaPlugin {
 						break;
 					}catch (PortUnreachableException e){
 						sender.sendMessage("Port cannot be reached.");
+						break;
+					}catch (SocketException e){
+						sender.sendMessage("Socket error: " + e.getMessage());
+						e.printStackTrace();
 						break;
 					}catch (IOException e){
 						sender.sendMessage("IO error: " + e.getMessage());
@@ -372,6 +377,8 @@ public class S2S extends JavaPlugin {
 				sender.sendMessage("Host cannot be reached.");
 			}catch (PortUnreachableException e){
 				sender.sendMessage("Port cannot be reached.");
+			}catch (SocketException e){
+				sender.sendMessage("IO error: " + e.getMessage());
 			}catch (IOException e){
 				sender.sendMessage("IO error: " + e.getMessage());
 			}

@@ -9,6 +9,7 @@ import java.net.NoRouteToHostException;
 import java.net.PortUnreachableException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketException;
 import java.net.SocketTimeoutException;
 
 import org.bukkit.Bukkit;
@@ -73,6 +74,8 @@ public class ServerListener implements Runnable {
 			serverSocket = new ServerSocket(plugin.listenPort);
 			serverSocket.setSoTimeout(plugin.connectionTimeout);
 			plugin.log.info("[" + plugin.getDescription().getName() + "] Server started.");
+		}catch (BindException e){
+			plugin.log.info("[" + plugin.getDescription().getName() + "] Port " + plugin.listenPort + " is already in use.");
 		}catch (IOException e){
 			e.printStackTrace();
 		}
@@ -81,6 +84,7 @@ public class ServerListener implements Runnable {
 			while (isRunning){
 				try{
 					socket = serverSocket.accept();
+					socket.setSoTimeout(plugin.connectionTimeout);
 					if(plugin.showIncoming){
 						plugin.log.info("[" + plugin.getDescription().getName() + "] Incoming packet from [" + socket.getLocalAddress().getHostAddress() + ":" + socket.getLocalPort() + "]...");
 					}
@@ -89,18 +93,16 @@ public class ServerListener implements Runnable {
 					if(object instanceof Packet){
 						Packet respond = (Packet) object;
 						if(respond.getPacketID() == PacketID.Ping){
-							Packet packet = new Packet(PacketID.Pong, socket.getLocalAddress().getHostAddress(), plugin.getDescription().getName(), plugin.getDescription().getVersion(), "Welcome to the server!");
+							Packet packet = new Packet(PacketID.Pong, socket.getLocalAddress().getHostAddress(), socket.getLocalPort(), plugin.getDescription().getName(), plugin.getDescription().getVersion(), "Welcome to the server!");
 							ObjectOutputStream output = new ObjectOutputStream(socket.getOutputStream());
 							output.flush();
 							output.writeObject(packet);
-							output.close();
 						}else{
 							//Write respond
-							Packet packet = new Packet(PacketID.Pong, socket.getLocalAddress().getHostAddress(), respond.getPluginName(), respond.getPluginVersion(), null);
+							Packet packet = new Packet(PacketID.Pong, socket.getLocalAddress().getHostAddress(), socket.getLocalPort(), respond.getPluginName(), respond.getPluginVersion(), null);
 							ObjectOutputStream output = new ObjectOutputStream(socket.getOutputStream());
 							output.flush();
 							output.writeObject(packet);
-							output.close();
 							if(plugin.connectorList.containsKey(respond.getPluginName().toLowerCase())){
 								PacketListener listener = plugin.connectorList.get(respond.getPluginName().toLowerCase()).getPacketListener();
 								if(plugin.hasPermission(plugin.parsePluginName(respond.getPluginName()), PluginPermissions.ReadData.getID())){
@@ -125,7 +127,11 @@ public class ServerListener implements Runnable {
 					plugin.log.info("[" + plugin.getDescription().getName() + "] Host cannot be reached.");
 				}catch (PortUnreachableException e){
 					plugin.log.info("[" + plugin.getDescription().getName() + "] Port cannot be reached.");
+				}catch (SocketException e){
+					plugin.log.info("[" + plugin.getDescription().getName() + "] Socket Exception: "+e.getMessage());
+					e.printStackTrace();
 				}catch (IOException e){
+					plugin.log.info("[" + plugin.getDescription().getName() + "] IO Exception: "+e.getMessage());
 					e.printStackTrace();
 				}catch (ClassNotFoundException e){
 					//WTF Just happened?
@@ -136,6 +142,7 @@ public class ServerListener implements Runnable {
 				plugin.log.info("[" + plugin.getDescription().getName() + "] Disconnecting...");
 				serverSocket.close();
 			}catch (IOException e){
+				plugin.log.info("[" + plugin.getDescription().getName() + "] IO Exception: "+e.getMessage());
 				e.printStackTrace();
 			}
 		}
